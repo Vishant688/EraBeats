@@ -1,4 +1,11 @@
 {
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "dependencies": {
     "@imagekit/nodejs": "^7.12.1",
     "bcryptjs": "^3.0.3",
