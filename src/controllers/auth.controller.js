@@ -1,7 +1,25 @@
-
 const userModel = require("../models/user.model");
+const userMusicModel = require("../models/userMusic.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+
+const isProd = process.env.NODE_ENV === "production";
+
+// Cookie options: cross-site (Vercel -> Render) needs secure + sameSite "none" in production
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+};
+
+function createToken(user) {
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+}
 
 // REGISTER API
 async function registerUser(req, res) {
@@ -34,12 +52,12 @@ async function registerUser(req, res) {
       role,
     });
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET
-    );
+    // Empty liked / recently-played document for the new user
+    await userMusicModel.create({ user: user._id });
 
-    res.cookie("token", token);
+    const token = createToken(user);
+
+    res.cookie("token", token, cookieOptions);
 
     return res.status(201).json({
       message: "User registered successfully",
@@ -93,12 +111,9 @@ async function loginUser(req, res) {
       });
     }
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET
-    );
+    const token = createToken(user);
 
-    res.cookie("token", token);
+    res.cookie("token", token, cookieOptions);
 
     return res.status(200).json({
       message: "User logged in successfully",
@@ -159,7 +174,11 @@ async function getCurrentUser(req, res) {
 
 // LOGOUT API
 async function logoutUser(req, res) {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
+  });
 
   return res.status(200).json({
     message: "User logged out successfully",

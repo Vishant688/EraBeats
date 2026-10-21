@@ -8,8 +8,10 @@ import PlayerBar from "./component/PlayerBar";
 import jaiJaiRamImage from "./assets/jai-jai-ram.jpg";
 import logo from "./assets/EraBeats.png";
 
-const API = "http://localhost:3000/api/music";
-const AUTH_API = "http://localhost:3000/api/auth";
+// Backend URL: set VITE_API_URL on Vercel; falls back to localhost for development
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API = `${API_BASE}/api/music`;
+const AUTH_API = `${API_BASE}/api/auth`;
 
 function App() {
   const [musics, setMusics] = useState([]);
