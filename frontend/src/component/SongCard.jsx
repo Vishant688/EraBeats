@@ -1,4 +1,3 @@
-
 import jaiJaiRamImage from "../assets/jai-jai-ram.jpg";
 
 function SongCard({
@@ -36,9 +35,27 @@ function SongCard({
           type="button"
           onClick={onPlay}
           aria-label={isPlaying ? "Pause song" : "Play song"}
-          className="absolute bottom-3 right-3 w-12 h-12 rounded-full bg-[#1ed75f] text-black flex items-center justify-center text-xl shadow-xl opacity-100 sm:opacity-0 sm:translate-y-2 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 transition duration-300 hover:scale-110"
+          className="absolute bottom-3 right-3 w-12 h-12 rounded-full bg-[#1ed75f] text-black flex items-center justify-center shadow-xl opacity-100 sm:opacity-0 sm:translate-y-2 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 transition duration-300 hover:scale-110"
         >
-          {isPlaying ? "Ⅱ" : "▶"}
+          {isPlaying ? (
+            <svg
+              viewBox="0 0 24 24"
+              className="w-6 h-6"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
+            </svg>
+          ) : (
+            <svg
+              viewBox="0 0 24 24"
+              className="w-6 h-6 ml-0.5"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          )}
         </button>
       </div>
 

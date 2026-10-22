@@ -33,6 +33,7 @@ function App() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [view, setView] = useState("home");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Admin upload form
   const [showUploadForm, setShowUploadForm] = useState(false);
@@ -661,6 +662,8 @@ function App() {
               : view
           }
           onNavigate={handleNavigate}
+          mobileOpen={menuOpen}
+          onClose={() => setMenuOpen(false)}
         />
       )}
 
@@ -672,6 +675,7 @@ function App() {
         <Navbar
           isLoggedIn={isLoggedIn}
           username={currentUser?.username}
+          onMenuClick={() => setMenuOpen(true)}
           onLogout={handleLogout}
         />
 

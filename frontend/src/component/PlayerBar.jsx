@@ -57,7 +57,7 @@ function PlayerBar({
             type="button"
             onClick={() => onToggleLike(music._id)}
             aria-label="Toggle like"
-            className={`ml-2 hidden shrink-0 sm:block transition hover:scale-110 ${
+            className={`ml-2 shrink-0 transition hover:scale-110 ${
               isLiked ? "text-green-500" : "text-gray-400 hover:text-white"
             }`}
           >

@@ -40,7 +40,12 @@ function NavIcon({ name }) {
   );
 }
 
-function Sidebar({ activePage = "home", onNavigate }) {
+function Sidebar({
+  activePage = "home",
+  onNavigate,
+  mobileOpen = false,
+  onClose,
+}) {
   const navItems = [
     { id: "home", label: "Home" },
     { id: "search", label: "Search" },
@@ -49,6 +54,7 @@ function Sidebar({ activePage = "home", onNavigate }) {
 
   const handleNavigation = (page) => {
     if (onNavigate) onNavigate(page);
+    if (onClose) onClose();
   };
 
   return (
@@ -111,6 +117,72 @@ function Sidebar({ activePage = "home", onNavigate }) {
           </button>
         ))}
       </nav>
+
+      {/* Mobile drawer: same sidebar, opened with the menu button */}
+      {mobileOpen && (
+        <div className="md:hidden fixed inset-0 z-[80]">
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={onClose}
+            className="absolute inset-0 bg-black/70"
+          />
+
+          <aside className="absolute left-0 top-0 flex h-full w-64 flex-col border-r border-white/10 bg-black p-5 shadow-2xl">
+            <div className="mb-8 flex items-start justify-between">
+              <img
+                src={logo}
+                alt="EraBeats Playlist"
+                className="h-auto w-44 object-contain"
+              />
+
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close menu"
+                className="rounded-full p-2 text-gray-400 hover:text-white"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 6l12 12" />
+                  <path d="M18 6 6 18" />
+                </svg>
+              </button>
+            </div>
+
+            <nav className="space-y-2">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => handleNavigation(item.id)}
+                  className={`flex w-full items-center gap-4 rounded-lg px-3 py-3 text-left transition ${
+                    activePage === item.id
+                      ? "bg-[#242424] text-white font-semibold"
+                      : "text-gray-400 hover:bg-[#181818] hover:text-white"
+                  }`}
+                >
+                  <NavIcon name={item.id} />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </nav>
+
+            <div className="mt-auto border-t border-white/10 pt-4">
+              <p className="text-xs text-gray-500">
+                Your music, your mood ♫
+              </p>
+            </div>
+          </aside>
+        </div>
+      )}
     </>
   );
 }
